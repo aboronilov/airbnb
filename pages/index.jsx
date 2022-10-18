@@ -1,11 +1,11 @@
 import Head from "next/head";
 import Image from "next/image";
-import { homedir } from "os";
 import axios from "axios";
 import https from "https";
 import Banner from "../components/Banner";
 import Header from "../components/Header";
 import SmallCard from "../components/SmallCard";
+import MediumCard from "../components/MediumCard";
 
 const Home = ({ exploreData, liveData }) => {
   return (
@@ -35,6 +35,11 @@ const Home = ({ exploreData, liveData }) => {
 
         <section>
           <h2 className="text-4xl font-semibold py-8">Live Anywhere</h2>
+          <div className="flex space-x-3 overflow-scroll scrollbar-hide p-3 -ml-3">
+            {liveData?.map(({ img, title }) => (
+              <MediumCard key={title} img={img} title={title} />
+            ))}
+          </div>
         </section>
       </main>
     </div>
