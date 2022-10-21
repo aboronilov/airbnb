@@ -3,12 +3,14 @@ import { useState } from "react";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { DateRangePicker } from "react-date-range";
+import { useRouter } from "next/router";
 
-const Header = () => {
+const Header = ({placeholder}) => {
   const [searchInput, setSearchInput] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [numberOfGuests, setNumberOfGuests] = useState(1)
+  const [numberOfGuests, setNumberOfGuests] = useState(1);
+  const router = useRouter();
 
   const selectionRange = {
     startDate: startDate,
@@ -21,16 +23,26 @@ const Header = () => {
     setEndDate(ranges.selection.endDate);
   };
 
-  const resetInput = (event) => {
-    event.preventDefault();
-    setSearchInput("")
+  const search = () => {
+    router.push({
+      pathname: "/search",
+      query: {
+        location: searchInput,
+        start: startDate.toISOString(),
+        end: endDate.toISOString(),
+        guests: numberOfGuests
+      }
+    })
   }
 
   return (
     <header className="sticky top-0 z-50 grid grid-cols-3 bg-white shadow-md p-5 md:px-10">
       {/* left */}
 
-      <div className="relative flex items-center justify-start h-10 cursor-pointer my-auto">
+      <div
+        onClick={() => router.push("/")}
+        className="relative flex items-center justify-start h-10 cursor-pointer my-auto"
+      >
         <Image
           src="https://links.papareact.com/qd3"
           alt="logo"
@@ -44,7 +56,7 @@ const Header = () => {
       <div className="flex items-center md:border-2 rounded-full py-2 md:shadow-sm">
         <input
           type="text"
-          placeholder="Search..."
+          placeholder={placeholder ? placeholder : "Search..."}
           value={searchInput}
           onChange={(event) => setSearchInput(event.target.value)}
           className="flex-grow pl-5 bg-transparent outline-none text-sm text-gray-600 placeholder-gray-400"
@@ -124,22 +136,22 @@ const Header = () => {
             >
               <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
             </svg>
-            <input 
+            <input
               type="number"
               value={numberOfGuests}
               min={1}
-              onChange={(e) => setNumberOfGuests(e.target.value)}              
-              className="w-12 pl-2 outline-none text-center text-lg text-red-400" 
+              onChange={(e) => setNumberOfGuests(e.target.value)}
+              className="w-12 pl-2 outline-none text-center text-lg text-red-400"
             />
           </div>
           <div className="flex items-center justify-around">
-            <button 
-              className="text-white bg-gray-800 rounded-lg py-2 px-5 text-sm transition duration-300 hover:shadow-xl hover:opacity-80" 
+            <button
+              className="text-white bg-gray-800 rounded-lg py-2 px-5 text-sm transition duration-300 hover:shadow-xl hover:opacity-80"
               onClick={() => setSearchInput("")}
             >
               Cancel
             </button>
-            <button className="text-red-600 bg-orange-200 rounded-lg py-2 px-5 text-sm transition duration-300 hover:shadow-xl hover:opacity-80">
+            <button onClick={search} className="text-white bg-red-600 rounded-lg py-2 px-5 text-sm transition duration-300 hover:shadow-xl hover:opacity-80">
               Search
             </button>
           </div>
