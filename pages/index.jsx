@@ -60,18 +60,10 @@ const Home = ({ exploreData, liveData }) => {
 export default Home;
 
 export const getStaticProps = async () => {
-  const agent = new https.Agent({
-    rejectUnauthorized: false,
-  });
-
-  const exploreResponse = await axios.get("https://links.papareact.com/pyp/", {
-    httpsAgent: agent,
-  });
+  const exploreResponse = await axios.get("https://www.jsonkeeper.com/b/4G1G");
   const exploreData = exploreResponse.data;
 
-  const liveResponse = await axios.get("https://links.papareact.com/zp1/", {
-    httpsAgent: agent,
-  });
+  const liveResponse = await axios.get("https://www.jsonkeeper.com/b/VHHT");
   const liveData = liveResponse.data;
 
   return {
